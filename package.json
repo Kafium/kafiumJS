@@ -1,0 +1,13 @@
+{
+  "name": "kafiumjs",
+  "version": "0.1.5",
+  "description": "Kafium decentralised blochchain network JS library",
+  "license": "GPL-2.0",
+  "engines": {
+      "node": "14.x"
+  },
+  "dependencies": {
+      "noble-ed25519": "^1.2.5",
+      "ws": "^7.5.3"
+  }
+}
