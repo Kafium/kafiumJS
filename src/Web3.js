@@ -2,7 +2,7 @@ const WebSocket = require('ws')
 const curve = require('noble-ed25519')
 
 const waitForData = require('./utils/socket').waitForData
-const kafiumJS = require('../')
+const getWalletFromPrivateKey = require('../index').getWalletFromPrivateKey
 
 const EventEmitter = require('events').EventEmitter
 
@@ -47,7 +47,7 @@ module.exports = class Web3 extends EventEmitter {
   signTransaction (privKey, receiver, amount) {
     if (!this.status === 'READY') throw new Error('NOT_CONNECTED')
     return new Promise((resolve) => {
-      kafiumJS.getWalletFromPrivateKey(privKey).then(wallet => {
+      getWalletFromPrivateKey(privKey).then(wallet => {
         this.ws.send(`getLastHash:${wallet.KWallet}`)
 
         waitForData(this.ws, 'lastHash').then(hash => {
