@@ -1,3 +1,5 @@
+const crypto = require('crypto')
+
 const WebSocket = require('ws')
 const curve = require('noble-ed25519')
 
