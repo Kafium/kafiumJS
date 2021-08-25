@@ -2,7 +2,7 @@ const WebSocket = require('ws')
 const curve = require('noble-ed25519')
 
 const waitForData = require('./utils/socket').waitForData
-const getWalletFromPrivateKey = require('../index').getWalletFromPrivateKey
+const getWalletFromPrivateKey = require('./index').getWalletFromPrivateKey
 
 const EventEmitter = require('events').EventEmitter
 
