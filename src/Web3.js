@@ -68,7 +68,7 @@ module.exports = class Web3 extends EventEmitter {
     if (!this.status === 'READY') throw new Error('NOT_CONNECTED')
     return new Promise((resolve, reject) => {
       this.ws.send(`newRawTransaction:${data}`)
-      waitForData(this.ws, 'queuedSuccess').then(data => {
+      waitForData(this.ws, 'queuedSuccess').then(() => {
         resolve()
       }).catch(err => {
         reject(err)
