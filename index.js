@@ -18,7 +18,7 @@ function createWallet () {
 
 function getWalletFromPrivateKey (privateKey) {
   return new Promise((resolve) => {
-    const privKey = uint8.hexToUint(privateKey)
+    const privKey = uint8.hexToUint8(privateKey)
     curve.getPublicKey(privKey).then(publicKey => {
       const publicKeyHex = uint8.uint8ToHex(publicKey)
       const KWallet = 'kX' + crypto.createHash('ripemd160').update(publicKeyHex).digest('hex') + publicKeyHex.slice(-6)
