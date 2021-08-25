@@ -11,7 +11,7 @@ module.exports = class Web3 extends EventEmitter {
     super()
 
     this.ws = new WebSocket(nodeAddress)
-    this.ws.on('open', function () {
+    this.ws.on('open', () => {
       this.status = 'READY'
       this.emit('ready')
     })
