@@ -3,6 +3,7 @@ const crypto = require('crypto')
 const WebSocket = require('ws')
 const curve = require('noble-ed25519')
 
+const KPoW = require('KPoW')
 const waitForData = require('./utils/socket').waitForData
 const getWalletFromPrivateKey = require('./index').getWalletFromPrivateKey
 
@@ -56,8 +57,9 @@ module.exports = class Web3 extends EventEmitter {
           const createdAt = Date.now()
           const latestHash = hash.toString().split(':')[1]
           const calculateHash = crypto.createHash('ripemd160').update(createdAt + latestHash + wallet.KWallet + receiver + amount).digest('hex')
+          const work = KPoW.getWork(calculateHash)
           curve.sign(calculateHash, privKey).then(tx => {
-            resolve({ signature: tx, hash: calculateHash, data: `${createdAt}|${wallet.KWallet}|${wallet.publicKey}|${receiver}|${amount}|${tx}` })
+            resolve({ signature: tx, hash: calculateHash, data: `${createdAt}|${wallet.KWallet}|${wallet.publicKey}|${receiver}|${amount}|${work}|${tx}` })
           })
         })
       })
