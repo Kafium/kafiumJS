@@ -13,7 +13,7 @@ class Wallet {
     })
   }
 
-  async static create () {
+  static async create () {
     const privKey = kcrypto.ed25519.utils.randomPrivateKey()
 
     return new Wallet(Buffer.from(privKey).toString('hex'))
