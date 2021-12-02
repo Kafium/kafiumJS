@@ -2,13 +2,15 @@ const kcrypto = require('KCrypto')
 const base62 = require('base-x')("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 class Wallet {
-  async constructor (privateKey) {
+  constructor (privateKey) {
     this.privateKey = privateKey
-    this.publicKey = await kcrypto.ed25519.getPublicKey(Uint8Array.from(Buffer.from(this.privateKey), 'hex'))
 
-    const base62Key = base62.encode(publicKey)
+    kcrypto.ed25519.getPublicKey(Uint8Array.from(Buffer.from(this.privateKey), 'hex')).then(publicKey => {
+      this.publicKey = publicKey
+      const base62Key = base62.encode(publicKey)
 
-    this.walletAddress = 'kX' + base62Key + kcrypto.crc16.crc16(base62Key)
+      this.walletAddress = 'kX' + base62Key + kcrypto.crc16.crc16(base62Key)
+    })
   }
 
   async static create () {
