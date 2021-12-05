@@ -5,7 +5,7 @@ class Wallet {
   constructor (privateKey) {
     this.privateKey = privateKey
 
-    kcrypto.ed25519.getPublicKey(Uint8Array.from(Buffer.from(this.privateKey), 'hex')).then(publicKey => {
+    kcrypto.ed25519.getPublicKey(Uint8Array.from(Buffer.from(this.privateKey, 'hex'))).then(publicKey => {
       this.publicKey = publicKey
       const base62Key = base62.encode(publicKey)
 
