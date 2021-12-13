@@ -1,41 +1,35 @@
-const kcrypto = require('KCrypto')
-const base62 = require('base-x')("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+const crypto = require('crypto')
+const curve = require('noble-ed25519')
+
+const uint8 = require('./utils/uint8')
 
 function createWallet () {
   return new Promise((resolve) => {
-    const privKey = kcrypto.ed25519.utils.randomPrivateKey()
-    kcrypto.ed25519.getPublicKey(privKey).then(publicKey => {
-      const base62Key = base62.encode(publicKey)
-      const KWallet = 'kX' + base62Key + kcrypto.crc16.crc16(base62Key)
-      resolve({ wallet: KWallet, privateKey: Buffer.from(privKey).toString('hex') })
+    const privKey = curve.utils.randomPrivateKey()
+    curve.getPublicKey(privKey).then(publicKey => {
+      const publicKeyHex = uint8.uint8ToHex(publicKey)
+      const KWallet = 'kX' + crypto.createHash('ripemd160').update(publicKeyHex).digest('hex') + publicKeyHex.slice(-6)
+      resolve({ KWallet: KWallet, publicKey: publicKeyHex, privateKey: uint8.uint8ToHex(privKey) })
     })
   })
 }
 
 function getWalletFromPrivateKey (privateKey) {
   return new Promise((resolve) => {
-    const privKey = Uint8Array.from(Buffer.from(privateKey, 'hex'))
-    kcrypto.ed25519.getPublicKey(privKey).then(publicKey => {
-      const base62Key = base62.encode(publicKey)
-      const KWallet = 'kX' + base62Key + kcrypto.crc16.crc16(base62Key)
-      resolve({ wallet: KWallet, privateKey: privateKey })
+    const privKey = uint8.hexToUint8(privateKey)
+    curve.getPublicKey(privKey).then(publicKey => {
+      const publicKeyHex = uint8.uint8ToHex(publicKey)
+      const KWallet = 'kX' + crypto.createHash('ripemd160').update(publicKeyHex).digest('hex') + publicKeyHex.slice(-6)
+      resolve({ KWallet: KWallet, publicKey: publicKeyHex, privateKey: privateKey })
     })
   })
 }
 
-function getWalletFromPublicKey (publicKey) {
+function getKWalletFromPublicKey (publicKey) {
   return new Promise((resolve) => {
-    const base62Key = base62.encode(Buffer.from(publicKey, 'hex'))
-    const KWallet = 'kX' + base62Key + kcrypto.crc16.crc16(base62Key)
+    const KWallet = 'kX' + crypto.createHash('ripemd160').update(publicKey).digest('hex') + publicKey.slice(-6)
     resolve(KWallet)
   })
 }
 
-function getPublicKeyFromWallet (wallet) {
-  return new Promise((resolve) => {
-    let publicKey = base62.decode(wallet.replace('kX', '').slice(0, -4))
-    resolve(publicKey.toString('hex'))
-  })
-}
-
-module.exports = { getWalletFromPublicKey, getWalletFromPrivateKey, createWallet, getPublicKeyFromWallet }
+module.exports = { getKWalletFromPublicKey, getWalletFromPrivateKey, createWallet }
