@@ -1,5 +1,3 @@
-const index = require('./src/index')
-const Web3 = require('./src/Web3')
+const wallet = require('./src/wallet')
 
-module.exports = index
-module.exports.Web3 = Web3
+module.exports.wallet = wallet
