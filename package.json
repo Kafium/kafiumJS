@@ -1,6 +1,6 @@
 {
   "name": "kafiumjs",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Kafium decentralised blockchain network JS library",
   "license": "GPL-2.0",
   "engines": {
