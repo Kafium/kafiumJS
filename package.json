@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "base-x": "^3.0.9",
-    "ws": "^7.5.3",
     "tweetnacl": "^1.0.3",
     "CRC8": "Kafium/CRC8",
     "KPoW": "Kafium/KPoW"
