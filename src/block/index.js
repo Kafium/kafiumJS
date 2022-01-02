@@ -38,13 +38,13 @@ module.exports = class Block {
 
   toJSON () {
     return {
-      blockType = this.blockType,
-      hash = this.calculateHash(),
-      sender = this.sender,
-      recipient = this.recipient,
-      amount = this.amount,
-      work = this.work,
-      signature = this.signature
+      blockType: this.blockType,
+      hash: this.calculateHash(),
+      sender: this.sender,
+      recipient: this.recipient,
+      amount: this.amount,
+      work: this.work,
+      signature: this.signature
     }
   }
 }
