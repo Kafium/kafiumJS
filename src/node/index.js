@@ -7,9 +7,9 @@ module.exports = class Node {
 
   async _request (data) {
     const parsedData = JSON.stringify(data)
-    const options = { hostname: this.rpcUrl, port: this.rpcUrl.split(":")[1] ?? 80, path: '/', method: 'POST', headers: { 'Content-Type': 'application/json', 'Content-Length': parsedData.length } }
+    const options = { hostname: this.rpcUrl.split(":")[0], port: this.rpcUrl.split(":")[1] ?? 80, path: '/', method: 'POST', headers: { 'Content-Type': 'application/json', 'Content-Length': parsedData.length } }
     
-    const req = https.request(options, res => {
+    const req = http.request(options, res => {
       if (res.statusCode !== 200) throw new Error("Cannot reach node, invalid status code!")
     
       let output = ""
@@ -32,7 +32,7 @@ module.exports = class Node {
   async getTotalBlocks () {
     const response = await this._request({
       "method": 'getTotalBlocks'
-    }).response
+    }).result
 
     return response
   }
@@ -41,7 +41,7 @@ module.exports = class Node {
     const response = await this._request({
       "method": 'announceBlock',
       "args": [ JSON.stringify(block.toJSON()) ]
-    }).response
+    }).result
 
     return response
   }
@@ -50,7 +50,7 @@ module.exports = class Node {
     const response = await this._request({
       "method": 'getBalance',
       "args": [ address ]
-    }).response
+    }).result
 
     return response
   }
