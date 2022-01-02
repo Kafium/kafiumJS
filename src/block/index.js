@@ -5,17 +5,17 @@ module.exports = class Block {
   constructor (blockType, blockData) {
     this.blockType = blockType
     this.sender = blockData.sender
-    this.amount = blockData.amount
     this.recipient = blockData.recipient
+    this.amount = blockData.amount
   }
 
   async setPreviousBlock (node) {
     const block = await node._request({
       "method": "queryChain",
-      "args": [ blockData.sender, 0 ]
-    })[0]
-
-    this.previousBlock = block?.previousBlock ?? null
+      "args": [ this.sender, 1 ]
+    })
+    
+    this.previousBlock = block[0]?.hash ?? null
   }
 
   calculateHash () {
@@ -40,6 +40,7 @@ module.exports = class Block {
     return {
       blockType: this.blockType,
       hash: this.calculateHash(),
+      previousBlock: this.previousBlock,
       sender: this.sender,
       recipient: this.recipient,
       amount: this.amount,

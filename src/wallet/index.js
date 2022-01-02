@@ -22,7 +22,7 @@ module.exports = class Wallet {
   }
 
   async sign (message) {
-    const signature = await tweetnacl.sign(message, Uint8Array.from(Buffer.from(this.privateKey, 'hex')))
+    const signature = await tweetnacl.sign(Uint8Array.from(Buffer.from(message, 'hex')), Uint8Array.from(Buffer.from(this.privateKey, 'hex')))
 
     return Buffer.from(signature).toString('hex')
   }
