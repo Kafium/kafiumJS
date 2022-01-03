@@ -15,7 +15,7 @@ module.exports = class Block {
       "args": [ this.sender, 1 ]
     })
     
-    this.previousBlock = block[0]?.hash ?? null
+    this.previousBlock = block?.[0]?.hash ?? null
   }
 
   calculateHash () {
