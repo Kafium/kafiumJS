@@ -18,7 +18,10 @@ module.exports = class Wallet {
   static create () {
     const privKey = tweetnacl.sign.keyPair().secretKey
 
-    return new Wallet(Buffer.from(privKey).toString('hex'))
+    const wallet = new Wallet(Buffer.from(privKey).toString('hex'))
+    if (wallet.walletAddress.length == 46) return this.create()
+
+    return wallet
   }
 
   async sign (message) {
